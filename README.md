@@ -1,88 +1,50 @@
+Fork 于 shadowsocks-heroku 项目
+
 shadowsocks-heroku
-==================
+Heroku 是一个支持多种编程语言的云平台即服务，shadowsocks-heroku 则是可部署在 Heroku 平台的 ss 服务。 和 shadowsocks 不同的是 shadowsocks-heroku 使用的 WebSocket 代替原本的 sockets。
 
-shadowsocks-heroku is a lightweight tunnel proxy which can help you get through firewalls. It is a port of [shadowsocks](https://github.com/clowwindy/shadowsocks), but through a different protocol.
+如果遇到问题
+请先检查是否遵循步骤（再次阅读一遍教程）
+请先自行通过搜索引擎寻找答案
+如果还没有解决，欢迎创建 issue 提问（贴日志和配置的时候注意隐藏app地址和密码等敏感信息）
+准备
+1. 注册 Heroku 帐号
+Heroku 提供免费账号，部分介绍如下：
 
-shadowsocks-heroku uses WebSocket instead of raw sockets, so it can be deployed on [Heroku](https://www.heroku.com/).
+512 MB RAM per dyno
+Free apps sleep automatically after 30 mins of inactivity to conserve your dyno hours
+Free apps wake automatically when a web request is received
+https://devcenter.heroku.com/articles/limits
+用作 VPS 是够了，注册地址：https://signup.heroku.com/
 
-Notice that the protocol is INCOMPATIBLE with the origin shadowsocks.
+部署
+点击  , 一键部署到heroku
 
-Heroku
-------
+设置 加密算法和app 密码 deploy
 
-### Usage
 
-```
-$ heroku create
-Creating still-tor-8707... done, stack is cedar-14
-http://still-tor-8707.herokuapp.com/ | git@heroku.com:still-tor-8707.git
-```
+支持的加密算法类型如下https://github.com/mrluanma/shadowsocks-heroku#supported-ciphers
 
-Push the code to Heroku.
+启动本地 Client
+下载release https://github.com/onplus/shadowsocks-heroku/releases （备份）
 
-```
-$ git push heroku master
-…
------> Compressing... done, 5.1MB
------> Launching... done, v3
-       http://still-tor-8707.herokuapp.com/ deployed to Heroku
+修改config.json参数（主要是server，password和method），运行ss-h
 
-To git@heroku.com:still-tor-8707.git
- * [new branch]      master -> master
-```
+启动成功，命令行显示：server listening at { address: '127.0.0.1', family: 'IPv4', port: 1080 }
 
-Set a few configs:
+配置代理
+下载：Chrome 浏览器 SwitchyOmega 插件
 
-```
-$ heroku config:set METHOD=rc4 KEY=foobar
-Setting config vars and restarting still-tor-8707... done, v11
-KEY:    foobar
-METHOD: rc4
-```
+安装：打开浏览器的扩展程序页面 chrome://extensions，把 SwitchyOmega.crx 文件拖放到浏览器扩展程序页面安装
 
-Install project dependencies with `npm install`:
+配置：SwitchyOmega
 
-```
-$ npm install
-…
-```
+代理协议：SOCKS5
+代理服务器：127.0.0.1
+代理端口：1080
+   ```
 
-Then run:
-
-```
-$ node local.js -s still-tor-8707.herokuapp.com -l 1080 -m rc4 -k foobar -r 80
-server listening at { address: '127.0.0.1', family: 'IPv4', port: 1080 }
-```
-
-Change proxy settings of your browser into:
-
-```
-SOCKS5 127.0.0.1:1080
-```
-
-### Troubleshooting
-
-If there is something wrong, you can check the logs by:
-
-```
-$ heroku logs -t --app still-tor-8707
-```
-
-Supported Ciphers
------------------
-
-- rc4
-- rc4-md5
-- table
-- bf-cfb
-- des-cfb
-- rc2-cfb
-- idea-cfb
-- seed-cfb
-- cast5-cfb
-- aes-128-cfb
-- aes-192-cfb
-- aes-256-cfb
-- camellia-256-cfb
-- camellia-192-cfb
-- camellia-128-cfb
+可选：
+使用无污染DNS https://www.zhihu.com/question/32229915
+cow/meow  https://github.com/cyfdecyf/cow#cow-climb-over-the-wall-proxy
+送人玫瑰手留余香rose（原作者）
